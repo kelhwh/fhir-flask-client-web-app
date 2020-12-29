@@ -9,12 +9,17 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'secret'
 
-base_dir = os.path.abspath(os.path.base_dir(__file__))
+base_dir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(base_dir, 'database.sqlite')
 
 db = SQLAlchemy(app)
 Migrate(app, db)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view('users.login')
+# login_manager = LoginManager()
+# login_manager.init_app(app)
+# login_manager.login_view('users.login')
+
+
+from application.core.views import core
+
+app.register_blueprint(core)
