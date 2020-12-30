@@ -1,0 +1,16 @@
+{% from 'macros.html' import render_form %}
+{% extends "base.html" %}
+{% block content %}
+  <div class="container bg-light">
+    <h1>Login</h1>
+    <br>
+    <form novalidate method="POST">
+      {{ form.hidden_tag() }}
+      {{ render_form(form.email) }}<br>
+      <br>
+      {{ render_form(form.password) }}<br>
+      <br>
+      {{ form.submit()}}
+    </form>
+  </div>
+{% endblock %}
