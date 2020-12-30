@@ -15,11 +15,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(base_dir, 'dat
 db = SQLAlchemy(app)
 Migrate(app, db)
 
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view('users.login')
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'users.login'
 
 
 from application.core.views import core
+from application.users.views import users
 
 app.register_blueprint(core)
+app.register_blueprint(users)
