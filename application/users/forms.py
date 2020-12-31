@@ -14,15 +14,14 @@ class LoginForm(FlaskForm):
         'Email',
         validators=[
             InputRequired(),
-            Email('Please provide a valid email address'),
+            Email('Please provide a valid email address.'),
             Length(max=64, message='Must be less than %(max)d characters long.')
         ]
     )
     password = PasswordField(
         'Password',
         validators=[
-            InputRequired(),
-            Length(min=8, max=64, message='Must be between %(min)d and %(max)d characters long.')
+            InputRequired()
         ]
     )
     submit = SubmitField('Login')
