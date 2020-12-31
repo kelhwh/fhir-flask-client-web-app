@@ -9,7 +9,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Patient Portal</a>
+        <a class="navbar-brand" href="{{ url_for('core.welcome') }}">Patient Portal</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-controls="navbarNav navbarLogin" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,16 +28,29 @@
         </div>
         <div class="collapse multi-collapse navbar-collapse w-100 order-3" id="navbarLogin">
           <ul class="navbar-nav ms-auto">
+            {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link active" href="#">Login</a>
+              <a class="nav-link active" href="{{ url_for('users.logout') }}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url_for('users.login') }}">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="#">Register</a>
+              <a class="nav-link active" href="{{ url_for('users.register') }}">Register</a>
             </li>
+            {% endif %}
+
           </ul>
         </div>
       </div>
     </nav>
+    {% for mess in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{mess}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
     {% block content %}
     {% endblock %}
   </body>
