@@ -9,23 +9,27 @@ def load_user(user_id):
     return UserModel.query.get(user_id)
 
 class UserModel(db.Model, UserMixin):
-    """docstring for UserModel."""
+
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) #can't change to user_id, it will crash the UserMixin
+    given_name = db.Column(db.String(64))
+    family_name = db.Column(db.String(64))
+    date_of_birth = db.Column(db.Date)
+    identifier_sysyem = db.Column(db.String())
+    identifier_value = db.Column(db.String(64))
+    patient_id = db.Column(db.Integer)
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(256))
-    first_name = db.Column(db.String(64))
-    last_name = db.Column(db.String(64))
-    date_of_birth = db.Column(db.Date)
-    insurance_id = db.Column(db.String(64))
 
 
-    def __init__(self, first_name, last_name, date_of_birth, insurance_id, email, password):
-        self.first_name = first_name
-        self.last_name = last_name
+    def __init__(self, given_name, family_name, date_of_birth, identifier_system, identifier_value, patient_id, email, password):
+        self.given_name = given_name
+        self.family_name = family_name
         self.date_of_birth = date_of_birth
-        self.insurance_id = insurance_id
+        self.identifier_system = identifier_system
+        self.identifier_value = identifier_value
+        self.patient_id = patient_id
         self.email = email
         self.password_hash = generate_password_hash(password)
 
@@ -34,4 +38,4 @@ class UserModel(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"Email: {self.email}, First_name: {self.first_name}"
+        return f"Email: {self.email}, given_name: {self.given_name}"
