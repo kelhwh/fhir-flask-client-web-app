@@ -7,6 +7,8 @@ from wtforms import ValidationError
 
 from flask_login import current_user
 from application.models import UserModel
+import datetime
+from wtforms.widgets import PasswordInput
 
 class check_duplicate():
     def __init__(self, model, field, message=None):
@@ -31,13 +33,16 @@ class LoginForm(FlaskForm):
             InputRequired(),
             Email('Please provide a valid email address.'),
             Length(max=64, message='Must be less than %(max)d characters long.')
-        ]
+        ],
+        default='test@example.com'
     )
-    password = PasswordField(
+    password = StringField(
         'Password',
         validators=[
             InputRequired()
-        ]
+        ],
+        widget=PasswordInput(hide_value=False), #for demo user
+        default=123123123 #for demo user
     )
     submit = SubmitField('Login')
 
@@ -47,12 +52,14 @@ class RegistrationForm(FlaskForm):
         validators=[
             InputRequired(),
             Length(max=64, message='Must be less than %(max)d characters long.')
-        ]
+        ],
+        default='Franecki195' #for demo user
     )
     date_of_birth = DateField(
         'Date of Birth',
         format='%Y-%m-%d',
-        validators=[InputRequired()]
+        validators=[InputRequired()],
+        default=datetime.datetime(1995,4,20) #for demo user
     )
     identifier_system = SelectField(
         'ID',
@@ -61,7 +68,8 @@ class RegistrationForm(FlaskForm):
         ],
         validators=[
             InputRequired()
-        ]
+        ],
+        default='http://hl7.org/fhir/sid/us-ssn' #for demo user
     )
     identifier_value = StringField(
         'ID Number',
@@ -69,7 +77,8 @@ class RegistrationForm(FlaskForm):
             InputRequired(),
             Length(max=64, message='Must be less than %(max)d characters long.')
         ],
-        render_kw = {"placeholder": "Your ID Number"}
+        render_kw = {"placeholder": "Your ID Number"},
+        default='999-45-3776' #for demo user
     )
     email = EmailField(
         'Email',
@@ -78,21 +87,26 @@ class RegistrationForm(FlaskForm):
             Email('Please provide a valid email address'),
             Length(max=64, message='Must be less than %(max)d characters long.'),
             check_duplicate(model=UserModel, field=UserModel.email)
-        ]
+        ],
+        default='test@example.com' #for demo user
     )
-    password = PasswordField(
+    password = StringField(
         'Password',
         validators=[
             InputRequired(),
             Length(min=8, max=64, message='Must be between %(min)d and %(max)d characters long.')
-        ]
+        ],
+        widget=PasswordInput(hide_value=False), #for demo user
+        default=123123123 #for demo user
     )
     password_confirm = PasswordField(
         'Confirm Password',
         validators=[
             InputRequired(),
             EqualTo('password', message=('Password does not match, please try again.'))
-        ]
+        ],
+        widget=PasswordInput(hide_value=False), #for demo user
+        default=123123123 #for demo user
     )
     submit = SubmitField('Register')
 
