@@ -6,13 +6,11 @@
     <br>
     <form novalidate method="POST">
       {{ form.hidden_tag() }}
-      {{ render_form(form.first_name) }}<br>
-      <br>
-      {{ render_form(form.last_name) }}<br>
+      {{ render_form(form.family_name) }}<br>
       <br>
       {{ render_form(form.date_of_birth) }}<br>
       <br>
-      {{ render_form(form.insurance_id) }}<br>
+      {{ render_form(form.identifier_system) }} {{ render_form(form.identifier_value, label=False) }}
       <br>
       {{ render_form(form.email) }}<br>
       <br>
