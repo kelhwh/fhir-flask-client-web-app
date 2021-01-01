@@ -1,4 +1,4 @@
-{% macro render_form(field) -%}
+{% macro render_form(field, label=True) -%}
     {% set with_label = kwargs.pop('with_label', False) %}
     {% set placeholder = '' %}
     {% if field.description %}
@@ -13,7 +13,9 @@
             </label>
         {% endif %}
         <div class="controls">
+            {% if label %}
             {{ field.label }}
+            {% endif %}
             <br>
             {% set class_ = kwargs.pop('class_', '') %}
             {% if field.flags.required %}
