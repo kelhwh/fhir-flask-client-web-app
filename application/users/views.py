@@ -11,9 +11,10 @@ users = Blueprint('users', __name__)
 @users.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
+    PatientFinder = ResourceFinder.build('Patient')
 
     if form.validate_on_submit():
-        patient = ResourceFinder.find_by_identifier(
+        patient = PatientFinder.find_by_identifier(
             'Patient',
             form.identifier_system.data,
             form.identifier_value.data,
