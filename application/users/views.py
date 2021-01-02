@@ -1,14 +1,14 @@
 from flask import render_template, Blueprint, redirect, url_for,flash
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import login_user, current_user, logout_user
 from application import db
 from application.models import UserModel
 from application.users.forms import LoginForm, RegistrationForm
 from application.fhir.search import ResourceFinder
 
-users = Blueprint('users', __name__)
+users_bp = Blueprint('users_bp', __name__)
 
 
-@users.route('/register', methods=['GET', 'POST'])
+@users_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     PatientFinder = ResourceFinder.build('Patient')
@@ -48,13 +48,13 @@ def register():
                 db.session.add(user)
                 db.session.commit()
                 flash(f'Welcome {patient.name[0].given[0]}! Please login now.')
-                return redirect(url_for('users.login'))
+                return redirect(url_for('users_bp.login'))
     else:
         print('failed validation')
     return render_template('register.html', form=form)
 
 
-@users.route('/login', methods=['GET', 'POST'])
+@users_bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
 
@@ -64,16 +64,16 @@ def login():
         if user is not None and user.check_password(form.password.data):
             login_user(user)
             flash(f'Welcome back, {user.given_name}!')
-            return redirect(url_for('core.main'))
+            return redirect(url_for('core_bp.main'))
 
         else:
             flash('Incorrect email or password, please try again.')
-            return redirect(url_for('users.login'))
+            return redirect(url_for('users_bp.login'))
 
     return render_template('login.html', form=form)
 
 
-@users.route('/logout', methods=['GET', 'POST'])
+@users_bp.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
-    return redirect(url_for('core.welcome'))
+    return redirect(url_for('core_bp.welcome'))
