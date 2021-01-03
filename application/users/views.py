@@ -15,7 +15,6 @@ def register():
 
     if form.validate_on_submit():
         patient = PatientFinder.find_by_identifier(
-            'Patient',
             form.identifier_system.data,
             form.identifier_value.data,
             first=True
