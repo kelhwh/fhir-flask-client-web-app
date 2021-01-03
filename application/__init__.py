@@ -23,11 +23,13 @@ def create_tables():
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'users.login'
+login_manager.login_view = 'users_bp.login'
 
 
-from application.core.views import core
-from application.users.views import users
+from application.core.views import core_bp
+from application.users.views import users_bp
+from application.appointments.views import appointments_bp
 
-app.register_blueprint(core)
-app.register_blueprint(users)
+app.register_blueprint(core_bp)
+app.register_blueprint(users_bp)
+app.register_blueprint(appointments_bp)
