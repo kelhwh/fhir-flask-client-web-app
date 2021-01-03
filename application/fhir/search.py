@@ -1,83 +1,44 @@
-from fhirclient.models import domainresource, bundle
+from fhirclient.models import domainresource, bundle, fhirsearch
 from application.fhir.connect import smart
 
 
 class ResourceFinder(domainresource.DomainResource):
     """
-    build() returns a class with specified resource_type, so we can use 'where'
+    build() returns a ResourceFinder object with specified resource_type, so we can use 'where'
     method to search for the given resource.
 
     Batch_size defines the number of resources in a single search result.
     """
+    #resource_type = "ResourceFinder"
+
+    def __init__(self, resource_type, batch_size, jsondict=None, strict=True):
+        self.resource_type = resource_type
+        self.batch_size = batch_size
 
 
     @classmethod
-    def build(cls, resource_type: str, batch_size=20) -> 'class':
-        cls.resource_type = resource_type
-        cls.batch_size = batch_size
-        return cls
+    def build(cls, resource_type: str, batch_size=20):
+        return cls(resource_type, batch_size)
 
-    # @classmethod
-    # def get(cls, search_parameter=None, first=False, page=1):
-    #     struct = {
-    #         "_count": str(cls.batch_size),
-    #         "_offset": str(cls.batch_size*(page-1))
-    #     }
-    #     if search_parameter:
-    #         struct
-    #
-    #     search = cls.where(struct=struct)
-    #     bundle = search.perform(smart.server)
-    #     result = SearchResult(bundle.as_json())
-    #
-    #     if first:
-    #         try:
-    #             resource = result.entry[0].resource
-    #         except:
-    #             resource = None
-    #         return resource
-    #     else:
 
-    @classmethod
-    def get(cls, reference):
-        #resource = cls.read(str(id), smart)
-        response = smart.server.request_json(reference)
-        resource = cls(response)
-        return resource
-
-    @classmethod
-    def find_by_identifier(cls, identifier_system: str, identifier_value: str, first=False, page=1):
+    def get(self, search_params=None, first=False, page=1, debug=False):
         struct = {
-            "identifier": "|".join((identifier_system, identifier_value)),
-            "_count": str(cls.batch_size),
-            "_offset": str(cls.batch_size*(page-1))
+            "_count": str(self.batch_size),
+            "_offset": str(self.batch_size*(page-1))
         }
-        search = cls.where(struct=struct)
-        bundle = search.perform(smart.server)
-        result = SearchResult(bundle.as_json())
+        if search_params:
+            for key, val in search_params.items():
+                struct[key] = val
 
-        if first:
-            try:
-                resource = result.entry[0].resource
-            except:
-                resource = None
-            return resource
-        else:
-            return result
+        search = fhirsearch.FHIRSearch(self, struct)
+        if debug:
+            print("{} has resource type '{}', search criteria: {} ".format(self.__class__, self.resource_type, search.construct()))
 
-    @classmethod
-    def find_by_patient(cls, patient_id: str, first=False, page=1):
-        struct = {
-            "patient": str(patient_id),
-            "_count": str(cls.batch_size),
-            "_offset": str(cls.batch_size*(page-1))
-        }
-        search = cls.where(struct=struct)
         bundle = search.perform(smart.server)
         result = SearchResult(bundle.as_json())
 
         struct.pop("_offset")
-        result.total = cls.where(struct=struct).perform(smart.server).total
+        result.total = fhirsearch.FHIRSearch(self, struct).perform(smart.server).total
 
         if first:
             try:
@@ -87,6 +48,21 @@ class ResourceFinder(domainresource.DomainResource):
             return resource
         else:
             return result
+
+
+    def find_by_identifier(self, identifier_system: str, identifier_value: str, **kwargs):
+        search_params = {"identifier": "|".join((identifier_system, identifier_value))}
+        return self.get(search_params=search_params, **kwargs)
+
+
+    def find_by_patient(self, patient_id: str, **kwargs):
+        search_params = {"patient": str(patient_id)}
+        return self.get(search_params=search_params, **kwargs)
+
+
+    def find_by_id(self, id: str, **kwargs):
+        search_params = {"_id": str(id)}
+        return self.get(search_params=search_params, first=True, page=1, **kwargs)
 
 
 class SearchResult(bundle.Bundle):
