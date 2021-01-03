@@ -9,3 +9,4 @@ alembic==1.4.3
 Flask_Migrate==2.5.3
 Flask==1.1.2
 uwsgi
+email_validator==1.1.2
