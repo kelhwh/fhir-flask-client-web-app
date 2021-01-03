@@ -1,6 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="jumbotron">
+  <div class="container bg-light" style="padding:50px">
     <h1>Welcome!</h1>
+    <h5>This is a FHIR client web app built with Flask.</h5>
+    <br>
+    <h2>Intro</h2>
+    <p>In the world of information, sharing is important.
+      But it's extremely difficult to communicate when it comes to complex domains like healthcare. Even the definition of a disease can vary across regions, let alone the format of medical records.
+      Fortunately, there is a popular interoperability standard, FHIR, to facilitate the exchange of health information.</p>
+    <p>
+      This web app connects to a public FHIR test server, everything is rendered on the fly (except for the login information).
+      That being said, the app can be easily migrated to any FHIR server by changing the server the app connects to. This is exactly the potential of FHIR!
+    </p>
+    <br>
+    <h2>Scope</h2>
+    <p>
+      Currently, only appointment history is redered and the app can only read the result. All <a href="https://www.hl7.org/fhir/resourcelist.html">FHIR resources</a> are actually available to render and requests are not limited to read but also create, update and delete.
+    </p>
+  </div>
+  <br>
+  <div class="container bg-light" style="padding:50px">
+    <h2>Instruction</h2>
+    <ol>
+      <li><a href="{{ url_for('users_bp.login') }}">Login</a> with prefilled credentials, if failed, go <a href="{{ url_for('users_bp.register') }}">register</a> the user first.</li>
+      <li>Go to Appointments, where you can see the appointment history of the patient fetched from the FHIR server.</li>
+    </ol>
+    <h4>Note</h4>
+    <ul>
+      <li>
+        <p>
+          The registration is verified with the patient information from the FHIR server, any change to the prefilled values will fail the registration.
+          You won't be able to register a new user unless you know what users are in the server.
+        </p>
+      </li>
+    </ul>
+  </div>
+  <br>
+  <div class="container bg-light" style="padding:50px">
+    <h2>Disclaimer</h2>
+    <p>The app connects to the HAPI FHIR Reference Server with STU3 endpoint <a href="http://hapi.fhir.org/baseDstu3/">http://hapi.fhir.org/baseDstu3/</a>. All information display is retrieved from the server and for testing purpose.</p>
+    <br>
+    <h2>Source</h2>
+    <ul>
+      <li><a href="https://github.com/kelhwh/fhir-flask-client-web-app">My GitHub repo</a></li>
+    </ul>
   </div>
 {% endblock %}
