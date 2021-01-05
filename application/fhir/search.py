@@ -10,19 +10,18 @@ class ResourceFinder(domainresource.DomainResource):
     Batch_size defines the number of resources in a single search result.
     """
 
-    def __init__(self, resource_type, batch_size, jsondict=None, strict=True):
+    def __init__(self, resource_type, jsondict=None, strict=True):
         self.resource_type = resource_type
-        self.batch_size = batch_size
 
 
     @classmethod
-    def build(cls, resource_type: str, batch_size=20):
+    def build(cls, resource_type: str):
         """ Returns a ResourceFinder object with specified resource tpye.
         """
-        return cls(resource_type, batch_size)
+        return cls(resource_type)
 
 
-    def get(self, search_params=None, first=False, page=1, debug=False):
+    def get(self, search_params=None, first=False, batch_size=20, page=1, debug=False):
         """ Perform search for specific resource.
 
         search_params dict: searh parameters other than _count and _offset in dictionary
@@ -31,8 +30,8 @@ class ResourceFinder(domainresource.DomainResource):
         page int: number of page of the result if there are more than one page
         """
         struct = {
-            "_count": str(self.batch_size),
-            "_offset": str(self.batch_size*(page-1))
+            "_count": str(batch_size),
+            "_offset": str(batch_size*(page-1))
         }
         if search_params:
             for key, val in search_params.items():
