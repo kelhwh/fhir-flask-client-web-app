@@ -4,19 +4,20 @@
     <meta charset="utf-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <link rel=”stylesheet” href=”https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css”>
     <title>Patient Portal</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('core_bp.welcome') }}">Patient Portal</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-controls="navbarNav navbarLogin" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" style="background:grey" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-controls="navbarNav navbarLogin" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse multi-collapse navbar-collapse w-100 order-1 order-md-0" id="navbarNav">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="profile.html">Profile</a>
+              <a class="nav-link" href="{{ url_for('profile_bp.profile') }}">Profile</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('appointments_bp.list') }}">Appointments</a>
@@ -37,7 +38,6 @@
               <a class="nav-link active" href="{{ url_for('users_bp.register') }}">Register</a>
             </li>
             {% endif %}
-
           </ul>
         </div>
       </div>
