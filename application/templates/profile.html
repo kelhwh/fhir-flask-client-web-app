@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container bg-light" style="padding:50px">
+    <h1>Profile</h1>
+  </div>
+  <div class="container" style="background:white; padding:50px">
+    <table class="table table-borderless">
+      <tbody>
+        <tr>
+          <th>Title</th>
+          <td>{{ profile['title'] }}</td>
+        </tr>
+        <tr>
+          <th>Full Name</th>
+          <td>{{ current_user.given_name }} {{ current_user.family_name }}</td>
+        </tr>
+        <tr>
+          <th>Date of Birth</th>
+          <td>{{ current_user.date_of_birth }}</td>
+        </tr>
+        <tr>
+          <th>Contact</th>
+          <td>{{ profile['contact'] }}</td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>{{ profile['address'] }}</td>
+        </tr>
+        <tr>
+          <th>Language</th>
+          <td>{{ profile['language'] }}</td>
+        </tr>
+      </tbody>
+  </div>
+{% endblock %}
