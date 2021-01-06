@@ -10,18 +10,17 @@ class ResourceFinder(domainresource.DomainResource):
     Batch_size defines the number of resources in a single search result.
     """
 
-    def __init__(self, resource_type, jsondict=None, strict=True):
+    def __init__(self, resource_type, server=None):
         self.resource_type = resource_type
-
+        self._server = server
 
     @classmethod
-    def build(cls, resource_type: str):
+    def build(cls, resource_type: str, server=None):
         """ Returns a ResourceFinder object with specified resource tpye.
         """
-        return cls(resource_type)
+        return cls(resource_type, server=server)
 
-
-    def get(self, search_params=None, first=False, batch_size=20, page=1, debug=False):
+    def find(self, search_params=None, first=False, batch_size=20, page=1, debug=False):
         """ Perform search for specific resource.
 
         search_params dict: searh parameters other than _count and _offset in dictionary
@@ -39,13 +38,16 @@ class ResourceFinder(domainresource.DomainResource):
 
         search = fhirsearch.FHIRSearch(self, struct)
         if debug:
-            print("{} has resource type '{}', search criteria: {} ".format(self.__class__, self.resource_type, search.construct()))
+            print("{} has resource type '{}', search query: {} ".format(self.__class__, self.resource_type, search.construct()))
 
-        bundle = search.perform(smart.server)
+        if self._server is None:
+            raise Exception("Cannot read resource without server instance")
+
+        bundle = search.perform(self._server)
         result = SearchResult(bundle.as_json())
 
         struct.pop("_offset")
-        result.total = fhirsearch.FHIRSearch(self, struct).perform(smart.server).total
+        result.total = fhirsearch.FHIRSearch(self, struct).perform(self._server).total
 
         if first:
             try:
@@ -56,26 +58,23 @@ class ResourceFinder(domainresource.DomainResource):
         else:
             return result
 
-
     def find_by_identifier(self, identifier_system: str, identifier_value: str, **kwargs):
-        """ Perform resource search by identifier, built on top of self.get()
+        """ Perform resource search by identifier, built on top of self.find()
         """
         search_params = {"identifier": "|".join((identifier_system, identifier_value))}
-        return self.get(search_params=search_params, **kwargs)
-
+        return self.find(search_params=search_params, **kwargs)
 
     def find_by_patient(self, patient_id: str, **kwargs):
-        """ Perform resource search by patient_id, built on top of self.get()
+        """ Perform resource search by patient_id, built on top of self.find()
         """
         search_params = {"patient": str(patient_id)}
-        return self.get(search_params=search_params, **kwargs)
-
+        return self.find(search_params=search_params, **kwargs)
 
     def find_by_id(self, id: str, **kwargs):
-        """ Perform resource search by resource id, built on top of self.get()
+        """ Perform resource search by resource id, built on top of self.find()
         """
         search_params = {"_id": str(id)}
-        return self.get(search_params=search_params, first=True, page=1, **kwargs)
+        return self.find(search_params=search_params, first=True, page=1, **kwargs)
 
 
 class SearchResult(bundle.Bundle):
