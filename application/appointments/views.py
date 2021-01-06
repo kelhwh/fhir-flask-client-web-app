@@ -1,6 +1,7 @@
 from flask import render_template, Blueprint, request
 from flask_login import current_user, login_required
 from application.fhir.search import ResourceFinder
+from application.fhir.connect import smart
 from contextlib import suppress
 
 ROWS_PER_PAGE = 10
@@ -17,8 +18,8 @@ appointments_bp = Blueprint(
 def list():
     page = request.args.get('page', 1, type=int)
 
-    OrganizationFinder = ResourceFinder.build('Organization')
-    EncounterFinder = ResourceFinder.build('Encounter')
+    OrganizationFinder = ResourceFinder.build('Organization', smart.server)
+    EncounterFinder = ResourceFinder.build('Encounter', smart.server)
 
     result = EncounterFinder.find_by_patient(current_user.patient_id, batch_size=ROWS_PER_PAGE, page=page)
     appointments_list = result.resource_list()

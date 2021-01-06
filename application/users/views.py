@@ -4,6 +4,7 @@ from application import db
 from application.models import UserModel
 from application.users.forms import LoginForm, RegistrationForm
 from application.fhir.search import ResourceFinder
+from application.fhir.connect import smart
 
 users_bp = Blueprint('users_bp', __name__)
 
@@ -11,7 +12,7 @@ users_bp = Blueprint('users_bp', __name__)
 @users_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    PatientFinder = ResourceFinder.build('Patient')
+    PatientFinder = ResourceFinder.build('Patient', smart.server)
 
     if form.validate_on_submit():
         patient = PatientFinder.find_by_identifier(
