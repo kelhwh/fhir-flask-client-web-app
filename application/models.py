@@ -16,7 +16,7 @@ class UserModel(db.Model, UserMixin):
     given_name = db.Column(db.String(64))
     family_name = db.Column(db.String(64))
     date_of_birth = db.Column(db.Date)
-    identifier_sysyem = db.Column(db.String())
+    identifier_system = db.Column(db.String())
     identifier_value = db.Column(db.String(64))
     patient_id = db.Column(db.Integer)
     email = db.Column(db.String(64), unique=True, index=True)

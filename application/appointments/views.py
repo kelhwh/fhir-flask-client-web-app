@@ -17,10 +17,10 @@ appointments_bp = Blueprint(
 def list():
     page = request.args.get('page', 1, type=int)
 
-    OrganizationFinder = ResourceFinder.build('Organization', batch_size=1)
-    EncounterFinder = ResourceFinder.build('Encounter', batch_size=ROWS_PER_PAGE)
+    OrganizationFinder = ResourceFinder.build('Organization')
+    EncounterFinder = ResourceFinder.build('Encounter')
 
-    result = EncounterFinder.find_by_patient(current_user.patient_id, page=page)
+    result = EncounterFinder.find_by_patient(current_user.patient_id, batch_size=ROWS_PER_PAGE, page=page)
     appointments_list = result.resource_list()
 
     max_page = ((result.total or 0) // ROWS_PER_PAGE) + 1

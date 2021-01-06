@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(base_dir, 'dat
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-Migrate(app, db)
+Migrate(app, db, render_as_batch=True)
 
 @app.before_first_request
 def create_tables():
@@ -29,7 +29,9 @@ login_manager.login_view = 'users_bp.login'
 from application.core.views import core_bp
 from application.users.views import users_bp
 from application.appointments.views import appointments_bp
+from application.profile.views import profile_bp
 
 app.register_blueprint(core_bp)
 app.register_blueprint(users_bp)
 app.register_blueprint(appointments_bp)
+app.register_blueprint(profile_bp)
