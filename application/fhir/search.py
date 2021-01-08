@@ -74,7 +74,7 @@ class ResourceFinder(domainresource.DomainResource):
         """ Perform resource search by resource id, built on top of self.find()
         """
         search_params = {"_id": str(id)}
-        return self.find(search_params=search_params, first=True, page=1, **kwargs)
+        return self.find(search_params=search_params, **kwargs)
 
 
 class SearchResult(bundle.Bundle):
