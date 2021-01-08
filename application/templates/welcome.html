@@ -15,8 +15,8 @@
     <br>
     <h2>Scope</h2>
     <p>
-      Currently, appointment history is redered and the app can only read the result. All <a href="https://www.hl7.org/fhir/resourcelist.html">FHIR resources</a> are actually possible to render and requests are not limited to read but also create, update and delete.
-      I aim to build the appointments and medication page with both read and update operations.
+      Currently, the app can read and render the Encounter resource (<a href="https://www.hl7.org/fhir/resourcelist.html">FHIR resources</a>).
+      I aim to render the appointments and medication resources and a patient page with both read and update operations.
     </p>
   </div>
   <br>
@@ -24,7 +24,7 @@
     <h2>Instruction</h2>
     <ol>
       <li><a href="{{ url_for('users_bp.login') }}">Login</a> with prefilled credentials, if failed, go <a href="{{ url_for('users_bp.register') }}">register</a> the user first.</li>
-      <li>Go to Appointments, where you can see the <a href="{{ url_for('appointments_bp.list') }}">appointment history</a> of the patient fetched from the FHIR server.</li>
+      <li>Go to <a href="{{ url_for('appointments_bp.list') }}">Appointments</a>, where you can see the appointment history of the patient fetched from the FHIR server.</li>
     </ol>
     <h4>Note</h4>
     <ul>
