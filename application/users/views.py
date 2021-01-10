@@ -49,8 +49,7 @@ def register():
                 db.session.commit()
                 flash(f'Welcome {patient.name[0].given[0]}! Please login now.')
                 return redirect(url_for('users_bp.login'))
-    else:
-        print('failed validation')
+
     return render_template('register.html', form=form)
 
 
@@ -60,7 +59,6 @@ def login():
 
     if form.validate_on_submit():
         user = UserModel.query.filter_by(email=form.email.data).first()
-        print(user)
         if user is not None and user.check_password(form.password.data):
             login_user(user)
             flash(f'Welcome back, {user.given_name}!')
@@ -76,4 +74,5 @@ def login():
 @users_bp.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
+    flash("You've now logged out.")
     return redirect(url_for('core_bp.welcome'))
