@@ -44,18 +44,20 @@ class ResourceFinder(domainresource.DomainResource):
             raise Exception("Cannot read resource without server instance")
 
         bundle = search.perform(self._server)
-        result = SearchResult(bundle.as_json())
-
-        struct.pop("_offset")
-        result.total = fhirsearch.FHIRSearch(self, struct).perform(self._server).total
 
         if first:
             try:
-                resource = result.entry[0].resource
+                resource = bundle.entry[0].resource
+                resource._server = self._server
             except:
                 resource = None
             return resource
         else:
+            result = SearchResult(bundle.as_json())
+            struct.pop("_offset")
+            result.total = fhirsearch.FHIRSearch(self, struct).perform(self._server).total
+            result._server = self._server
+
             return result
 
     def find_by_identifier(self, identifier_system: str, identifier_value: str, **kwargs):
@@ -91,6 +93,8 @@ class SearchResult(bundle.Bundle):
         resources = []
         if self.entry is not None:
             for entry in self.entry:
-                resources.append(entry.resource)
+                resource = entry.resource
+                resource._server = self._server
+                resources.append(resource)
 
         return resources
