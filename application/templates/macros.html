@@ -1,4 +1,4 @@
-{% macro render_form(field, label=True) -%}
+{% macro render_form(field, label=True, value=None) -%}
     {% set with_label = kwargs.pop('with_label', False) %}
     {% set placeholder = '' %}
     {% if field.description %}
@@ -27,12 +27,16 @@
                     {{ field.label.text|safe }}
                 </label>
             {% else %}
-                {% if field.type in ('TextField', 'TextAreaField', 'PasswordField') %}
-                    {% set class_ = class_ + ' input-xlarge' %}
-                {% elif field.type == 'FileField' %}
-                    {% set class_ = class_ + ' input-file' %}
-                {% endif %}
+              {% if field.type in ('TextField', 'TextAreaField', 'PasswordField') %}
+                {% set class_ = class_ + ' input-xlarge' %}
+              {% elif field.type == 'FileField' %}
+                {% set class_ = class_ + ' input-file' %}
+              {% endif %}
+              {% if value %}
+                {{ field(class_=class_, value=value, **kwargs) }}
+              {% else %}
                 {{ field(class_=class_, placeholder=placeholder, **kwargs) }}
+              {% endif %}
             {% endif %}
             {% if field.errors %}
                 <span class="error help-inline" style="color:red">{{ field.errors|join(', ') }}</span>

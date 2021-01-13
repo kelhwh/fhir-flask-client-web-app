@@ -25,7 +25,6 @@ class check_duplicate():
             raise ValidationError(self.message)
 
 
-
 class LoginForm(FlaskForm):
     email = EmailField(
         'Email',
@@ -45,6 +44,7 @@ class LoginForm(FlaskForm):
         default=123123123 #for demo user
     )
     submit = SubmitField('Login')
+
 
 class RegistrationForm(FlaskForm):
     family_name = StringField(
@@ -109,7 +109,3 @@ class RegistrationForm(FlaskForm):
         default=123123123 #for demo user
     )
     submit = SubmitField('Register')
-
-    def validate_email(self, field): #in-line validator, will be validated once validate_on_submit is called.
-        if UserModel.query.filter_by(email=field.data).first():
-            raise ValidationError('The email has been registered already.')

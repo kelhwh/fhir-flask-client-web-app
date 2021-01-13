@@ -7,28 +7,37 @@
     <table class="table table-borderless">
       <tbody>
         <tr>
-          <th>Title</th>
+          <th style="width: 150px; text-align:right">Title</th>
           <td>{{ profile['title'] }}</td>
         </tr>
         <tr>
-          <th>Full Name</th>
+          <th style="text-align:right">Full Name</th>
           <td>{{ current_user.given_name }} {{ current_user.family_name }}</td>
         </tr>
         <tr>
-          <th>Date of Birth</th>
+          <th style="text-align:right">Date of Birth</th>
           <td>{{ current_user.date_of_birth }}</td>
         </tr>
         <tr>
-          <th>Contact</th>
+          <th style="text-align:right">Contact</th>
           <td>{{ profile['contact'] }}</td>
         </tr>
         <tr>
-          <th>Address</th>
+          <th style="text-align:right">Address</th>
           <td>{{ profile['address'] }}</td>
         </tr>
         <tr>
-          <th>Language</th>
+          <th style="text-align:right">Language</th>
           <td>{{ profile['language'] }}</td>
+        </tr>
+        <tr>
+          <td><br></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td>
+            <a class="btn btn-secondary" href="{{ url_for('profile_bp.edit') }}" rold="button">Edit</a>
+          </td>
         </tr>
       </tbody>
   </div>

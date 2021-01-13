@@ -1,0 +1,60 @@
+{% from 'macros.html' import render_form %}
+{% extends "base.html" %}
+{% block content %}
+  <div class="container bg-light" style="padding:50px">
+    <h1>Profile</h1>
+  </div>
+  <div class="container" style="background:white; padding:50px">
+    <form novalidate method="POST">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <th style="width: 150px; text-align:right">Title</th>
+            <td>{{ profile['title'] }}</td>
+          </tr>
+          <tr>
+            <th style="text-align:right">Full Name</th>
+            <td>{{ current_user.given_name }} {{ current_user.family_name }}</td>
+          </tr>
+          <tr>
+            <th style="text-align:right">Date of Birth</th>
+            <td>{{ current_user.date_of_birth }}</td>
+          </tr>
+          <tr>
+            <th style="text-align:right">Contact</th>
+            <td>{{ profile['contact'] }}</td>
+          </tr>
+          <tr>
+            <th style="text-align:right">Address</th>
+            <td>
+              <table class="table table-borderless">
+                <tr>
+                  <td>
+                    {{ form.hidden_tag() }}
+                    {{ render_form(form.city, value=profile['city']) }}
+                  </td>
+                  <td>{{ render_form(form.state, value=profile['state']) }}</td>
+                  <td>{{ render_form(form.postalcode, value=profile['postalcode']) }}</td>
+                  <td>{{ render_form(form.country, value=profile['country']) }}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <th style="text-align:right">Language</th>
+            <td>{{ profile['language'] }}</td>
+          </tr>
+          <tr>
+            <td><br></td>
+          </tr>
+          <tr>
+            <th></th>
+            <td>
+              {{ form.submit(class="btn btn-secondary" ) }}
+              <a class="btn btn-link" href="{{ url_for('profile_bp.profile') }}" rold="button">Cancel</a>
+            </td>
+          </tr>
+        </tbody>
+    </form>
+  </div>
+{% endblock %}
