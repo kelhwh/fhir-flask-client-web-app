@@ -50,6 +50,11 @@ def profile():
 @profile_bp.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
+    try:
+        session['profile']
+    except KeyError:
+        return redirect(url_for('profile_bp.profile'))
+
     form = EditProfileForm()
 
     PatientFinder = ResourceFinder.build('Patient', smart.server)
@@ -69,13 +74,10 @@ def edit():
         patient.address[0].postalCode = postalcode
         patient.address[0].country = country
 
-        print(patient.address[0])
-
         updated_patient = Patient(patient.update())
 
         if updated_patient:
             flash("Your profile has been updated successfully!")
-            print(updated_patient.address[0].postalCode)
             return redirect(url_for('profile_bp.profile'))
 
     return render_template('edit.html', form=form, profile=session['profile'])
