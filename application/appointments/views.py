@@ -32,7 +32,7 @@ def list():
         try:
             ref = appointment.serviceProvider.reference.split("/")[-1]
             id = ref.split("/")[-1]
-            provider = OrganizationFinder.find_by_id(id)
+            provider = OrganizationFinder.find_by_id(id, first=True)
             provider_name = provider.name
         except:
             provider_name = None
