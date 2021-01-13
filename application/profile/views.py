@@ -74,9 +74,9 @@ def edit():
         patient.address[0].postalCode = postalcode
         patient.address[0].country = country
 
-        updated_patient = Patient(patient.update())
+        updated_patient_dict = patient.update()
 
-        if updated_patient:
+        if updated_patient_dict:
             flash("Your profile has been updated successfully!")
             return redirect(url_for('profile_bp.profile'))
 

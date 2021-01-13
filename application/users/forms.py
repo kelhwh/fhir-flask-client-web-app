@@ -25,7 +25,6 @@ class check_duplicate():
             raise ValidationError(self.message)
 
 
-
 class LoginForm(FlaskForm):
     email = EmailField(
         'Email',
@@ -45,6 +44,7 @@ class LoginForm(FlaskForm):
         default=123123123 #for demo user
     )
     submit = SubmitField('Login')
+
 
 class RegistrationForm(FlaskForm):
     family_name = StringField(
