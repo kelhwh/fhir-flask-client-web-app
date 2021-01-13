@@ -57,7 +57,6 @@ class ResourceFinder(domainresource.DomainResource):
             struct.pop("_offset")
             result.total = fhirsearch.FHIRSearch(self, struct).perform(self._server).total
             result._server = self._server
-
             return result
 
     def find_by_identifier(self, identifier_system: str, identifier_value: str, **kwargs):
