@@ -1,9 +1,10 @@
-from flask import render_template, Blueprint, redirect, url_for
+from flask import render_template, Blueprint, redirect, url_for, request
 from flask_login import current_user, login_required
 from fhirclient.models import condition, practitioner
 from application.fhir.connect import smart
 from application.fhir.search import ResourceFinder
-from datetime import datetime
+from datetime import datetime, timedelta
+import pandas as pd
 
 medications_bp = Blueprint(
     'medications_bp',
@@ -36,11 +37,27 @@ def timeline():
             dict['reason'] = resource.code.text
 
         medications.append(dict)
-        medications = [i for i in sorted(medications, key=lambda item: item['date'], reverse=True)]
+        medications = [m for m in sorted(medications, key=lambda item: item['date'], reverse=True)]
 
     return render_template('timeline.html', medications=medications)
 
 
-@medications_bp.route('/grid')
+@medications_bp.route('/grid', methods=['GET'])
 def grid():
-    return render_template('grid.html')
+    search_date = request.args.get('search_date') or '2014-01-20'
+    search_date = datetime.fromisoformat(search_date).date()
+    start = search_date - timedelta(days = 15)
+    end = search_date + timedelta(days = 15)
+    date_range = pd.date_range(start=start,end=end)
+
+    search_params = {
+        'patient':str(current_user.patient_id),
+        'effective-time':'ge' + start.__str__(),
+        'effective-time':'le' + end.__str__()
+    }
+
+    MedicationAdministrationFinder = ResourceFinder.build('MedicationAdministration', smart.server)
+    medication_list = MedicationAdministrationFinder.find(search_params=search_params).resource_list()
+    print(medication_list)
+
+    return render_template('grid.html', search_date=search_date, start=start, end=end, date_range=date_range)
