@@ -9,12 +9,13 @@ import pandas as pd
 medications_bp = Blueprint(
     'medications_bp',
     __name__,
-    url_prefix='/medications'
+    url_prefix='/medications',
+    template_folder='templates/medications'
 )
 
-@medications_bp.route('/timeline')
+@medications_bp.route('/list')
 @login_required
-def timeline():
+def list():
     MedicationRequestFinder = ResourceFinder('MedicationRequest', smart.server)
 
     resouce_list = MedicationRequestFinder.find_by_patient(current_user.patient_id).resource_list()
@@ -39,7 +40,7 @@ def timeline():
         medications.append(dict)
         medications = [m for m in sorted(medications, key=lambda item: item['date'], reverse=True)]
 
-    return render_template('timeline.html', medications=medications)
+    return render_template('list.html', medications=medications)
 
 
 @medications_bp.route('/grid', methods=['GET'])
