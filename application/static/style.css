@@ -10,10 +10,9 @@
 }
 
 .wrapper {
-  max-width: 1200px;
+  /* max-width: 1200px; */
   min-width: 700px;
   margin: 0 auto;
-  padding: 4px;
 }
 
 .gantt {
@@ -21,7 +20,7 @@
   border: 0;
   border-radius: 12px;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
   box-sizing: border-box;
   /* box-shadow: 0 75px 125px -57px #7e8f94; */
 }
@@ -54,7 +53,7 @@
   height: 100%;
   width: 100%;
   background-color: transparent;
-  grid-template-columns: 150px repeat(12, 1fr);
+  grid-template-columns: 150px repeat(31, 1fr);
 }
 .gantt__row--lines span {
   display: block;
@@ -75,7 +74,7 @@
   color: #fff;
   background-color: #0a3444 !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  grid-template-columns: 150px repeat(12, 1fr);
+  grid-template-columns: 150px repeat(31, 1fr);
 }
 .gantt__row--months .gantt__row-first {
   border-top: 0 !important;
@@ -103,7 +102,7 @@
   display: grid;
   padding: 9px 0;
   margin: 0;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(31, 1fr);
   grid-gap: 8px 0;
   border-top: 1px solid rgba(221, 221, 221, 0.8);
 }
