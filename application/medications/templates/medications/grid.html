@@ -40,6 +40,9 @@
   		</div>
       {% endfor %}
   	</div>
+    {% if not medications %}
+    <p>No history of medication administration between {{ start }} and {{ end }}, try 2014-01-25.</p>
+    {% endif %}
   </div>
 </div>
 
