@@ -26,8 +26,6 @@ def list():
 
         dict = {}
         dict['medication_name'] = m.get('medicationCodeableConcept', {}).get('text')
-        #dict['pratitioner_name'] = m.get('requester', {}).get('agent').get('reference')
-        #dict['reason'] = m.get('reasonReference', [{}])[0].get('reference')
         dict['date'] = datetime.fromisoformat(m.get('authoredOn')).date().__str__()
         if m.get('requester', {}).get('agent', {}).get('reference') is not None:
             resource = practitioner.Practitioner.read_from(m.get('requester', {}).get('agent').get('reference'), smart.server)
