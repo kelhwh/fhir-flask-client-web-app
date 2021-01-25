@@ -59,7 +59,6 @@ def grid():
 
     MedicationAdministrationFinder = ResourceFinder.build('MedicationAdministration', smart.server)
     resouce_list = MedicationAdministrationFinder.find(search_params=search_params).resource_list()
-    print(resouce_list)
     medications = []
     for m in resouce_list:
         m = m.as_json()
