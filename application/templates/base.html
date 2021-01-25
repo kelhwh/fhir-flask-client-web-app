@@ -22,6 +22,15 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('appointments_bp.list') }}">Appointments</a>
             </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Medications
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{{ url_for('medications_bp.list') }}">List</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('medications_bp.grid') }}">Search</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
         <div class="collapse multi-collapse navbar-collapse w-100 order-3" id="navbarLogin">
