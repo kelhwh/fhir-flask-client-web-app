@@ -42,6 +42,7 @@ def list():
 
 
 @medications_bp.route('/grid', methods=['GET'])
+@login_required
 def grid():
     search_date = request.args.get('search_date') or '2014-01-25'
     search_date = datetime.fromisoformat(search_date).date()
