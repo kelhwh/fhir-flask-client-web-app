@@ -9,11 +9,17 @@ from application.fhir.connect import smart
 oauth_bp = Blueprint(
     'oauth_bp',
     __name__,
-    url_prefix='/oauth'
+    url_prefix='/oauth',
+    template_folder='templates/oauth'
 )
 
+@oauth_bp.route('/', methods=['GET'])
+def index():
+
+    return render_template('index.html')
+
 @oauth_bp.route('/<service>', methods=['GET'])
-def index(service):
+def redirect_to_auth(service):
     # url of authorize endpoint with params appended
     url = smart.authorize_url
 
@@ -24,7 +30,11 @@ def oauth2_callback(service):
     print(service)
 
     smart.handle_callback(request.url)
+
     if smart.ready:
+        patient = smart.patient
+        print(smart.patient_id)
+        print(smart.server.auth.access_token)
         flash(f'Successfully authorized by {service.upper()}! Welcome, {smart.human_name(smart.patient.name[0])}!')
     else:
         flash(f'Authorization Failed! Please try again.')
