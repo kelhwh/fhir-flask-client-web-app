@@ -14,18 +14,14 @@ profile_bp = Blueprint(
 
 
 @profile_bp.route('/', methods=['GET'])
-@login_required
 def profile():
 
     PatientFinder = ResourceFinder.build('Patient', smart.server)
-    patient = PatientFinder.find_by_id(
-        current_user.patient_id,
-        first=True
-    )
+    patient = PatientFinder.find_by_id(smart.patient_id, first=True)
 
     profile={}
     with suppress(TypeError):
-        profile['title'] = patient.name[0].prefix[0]
+        profile['title'] = patient.as_json().get('name', [{}])[0].get('prefix', [None])[0]# patient.name[0].prefix[0]
         profile['contact'] = "{}: {} ({})".format(
             patient.telecom[0].system,
             patient.telecom[0].value,
@@ -45,7 +41,7 @@ def profile():
 
         session['profile'] = profile
 
-    return render_template('profile.html', profile=profile)
+    return render_template('profile.html', profile=profile, smart=smart)
 
 @profile_bp.route('/edit', methods=['GET', 'POST'])
 @login_required
