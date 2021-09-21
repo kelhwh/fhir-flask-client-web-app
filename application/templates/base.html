@@ -37,7 +37,7 @@
           <ul class="navbar-nav ms-auto">
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link active" href="{{ url_for('users_bp.logout') }}">Logout</a>
+              <a class="nav-link active" href="{{ url_for('oauth_bp.reset') }}">Logout</a>
             </li>
             {% else %}
             <li class="nav-item">

@@ -1,5 +1,5 @@
 from flask import render_template, Blueprint, redirect, url_for,flash, request
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from application import db
 from application.models import UserModel
 from application.fhir.search import ResourceFinder
@@ -16,7 +16,6 @@ oauth_bp = Blueprint(
 
 @oauth_bp.route('/', methods=['GET'])
 def index():
-
     return render_template('index.html')
 
 @oauth_bp.route('/<service>', methods=['GET'])
@@ -25,6 +24,14 @@ def redirect_to_auth(service):
     url = smart.authorize_url
 
     return redirect(url, 302)
+
+@oauth_bp.route('/reset', methods=['GET'])
+def reset():
+    smart.server.auth.reset()
+    logout_user()
+    flash("You've now logged out.")
+
+    return redirect(url_for('core_bp.welcome'))
 
 @oauth_bp.route('/<service>/callback')
 def oauth2_callback(service):
@@ -63,4 +70,4 @@ def oauth2_callback(service):
         flash(f'Authorization Failed! Please try again.')
 
 
-    return redirect(url_for('core_bp.welcome'))
+    return redirect(url_for('core_bp.main'))
