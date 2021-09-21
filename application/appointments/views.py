@@ -2,6 +2,7 @@ from flask import render_template, Blueprint, request
 from application.fhir.search import ResourceFinder
 from application.fhir.connect import smart
 from contextlib import suppress
+from application.oauth.util import oauth_required
 
 ROWS_PER_PAGE = 10
 
@@ -13,6 +14,7 @@ appointments_bp = Blueprint(
 
 
 @appointments_bp.route('/list', methods=['GET'])
+@oauth_required
 def list():
     page = request.args.get('page', 1, type=int)
 

@@ -5,6 +5,7 @@ from contextlib import suppress
 from application.fhir.connect import smart
 from application.fhir.search import ResourceFinder
 from application.profile.forms import EditProfileForm
+from application.oauth.util import oauth_required
 
 profile_bp = Blueprint(
     'profile_bp',
@@ -14,6 +15,7 @@ profile_bp = Blueprint(
 
 
 @profile_bp.route('/', methods=['GET'])
+@oauth_required
 def profile():
 
     PatientFinder = ResourceFinder.build('Patient', smart.server)
