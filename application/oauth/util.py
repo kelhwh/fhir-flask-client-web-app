@@ -1,4 +1,4 @@
-from flask import redirect, render_template, url_for
+from flask import redirect, render_template, url_for, flash
 from fhirclient.server import FHIRUnauthorizedException
 from fhirclient.models import patient
 from functools import wraps
@@ -10,6 +10,7 @@ def oauth_required(func):
         try:
             return func(*args, **kwargs)
         except:
+            flash("Please login first.")
             return redirect(url_for('oauth_bp.index'))
         else:
             return render_template('error.html')
