@@ -15,4 +15,5 @@ def oauth_required(func):
         else:
             return render_template('error.html')
         return func(*args, **kwargs)
+        
     return decorated_view
