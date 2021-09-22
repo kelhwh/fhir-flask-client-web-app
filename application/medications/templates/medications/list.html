@@ -1,0 +1,44 @@
+{% from 'macros.html' import render_form %}
+{% extends "base.html" %}
+{% block content %}
+  <div class="container bg-light" style="padding:50px">
+    <h1>Medication History</h1>
+    <h2>{{ ' '.join([current_user.given_name, current_user.family_name]) }}</h2>
+  </div>
+  <div class="container bg-white" style="padding:50px">
+    {% for medication in medications %}
+    <!-- time line item 1 -->
+    <div class="row">
+      <div class="col-auto text-center flex-column d-none d-sm-flex">
+        <div class="row h-50">
+          <div class="col border-end">&nbsp;</div>
+          <div class="col">&nbsp;</div>
+        </div>
+        <h5 class="m-2">
+          <span class="badge rounded-circle bg-light border">&nbsp;</span>
+        </h5>
+        <div class="row h-50">
+          <div class="col border-end">&nbsp;</div>
+          <div class="col">&nbsp;</div>
+        </div>
+      </div>
+      <div class="col py-2">
+        <div class="card">
+          <div class="card-header">{{ medication.get('date', 'n/a') }}</div>
+          <div class="card-body">
+            <!-- <div class="float-end">Dec 10th 2020</div> -->
+            <h4 class="card-title">{{ medication.get('medication_name', 'n/a') }}</h4>
+            <div class="card-text">
+              <ul>
+                <li>Requested by {{ medication.get('practitioner_name', 'n/a') }}</li>
+                <li>For condition {{ medication.get('reason', 'n/a') }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end time line item 1 -->
+    {% endfor %}
+  </div>
+{% endblock %}

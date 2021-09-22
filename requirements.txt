@@ -10,3 +10,5 @@ Flask_Migrate==2.5.3
 Flask==1.1.2
 uwsgi
 email_validator==1.1.2
+pandas==1.2.0
+numpy==1.19.5

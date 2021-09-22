@@ -32,11 +32,13 @@ class ResourceFinder(domainresource.DomainResource):
             "_count": str(batch_size),
             "_offset": str(batch_size*(page-1))
         }
-        if search_params:
-            for key, val in search_params.items():
-                struct[key] = val
-
         search = fhirsearch.FHIRSearch(self, struct)
+
+        if search_params:
+            for key, val in search_params:
+                search.params.append(fhirsearch.FHIRSearchParam(key, val))
+
+        #search = fhirsearch.FHIRSearch(self, struct)
         if debug:
             print("{} has resource type '{}', search query: {} ".format(self.__class__, self.resource_type, search.construct()))
 
@@ -54,27 +56,27 @@ class ResourceFinder(domainresource.DomainResource):
             return resource
         else:
             result = SearchResult(bundle.as_json())
-            struct.pop("_offset")
-            result.total = fhirsearch.FHIRSearch(self, struct).perform(self._server).total
+            search.params = search.params[2:]
+            result.total = search.perform(self._server).total
             result._server = self._server
             return result
 
     def find_by_identifier(self, identifier_system: str, identifier_value: str, **kwargs):
         """ Perform resource search by identifier, built on top of self.find()
         """
-        search_params = {"identifier": "|".join((identifier_system, identifier_value))}
+        search_params = [("identifier", "|".join((identifier_system, identifier_value)))]
         return self.find(search_params=search_params, **kwargs)
 
     def find_by_patient(self, patient_id: str, **kwargs):
         """ Perform resource search by patient_id, built on top of self.find()
         """
-        search_params = {"patient": str(patient_id)}
+        search_params = [("patient", str(patient_id))]
         return self.find(search_params=search_params, **kwargs)
 
     def find_by_id(self, id: str, **kwargs):
         """ Perform resource search by resource id, built on top of self.find()
         """
-        search_params = {"_id": str(id)}
+        search_params = [("_id", str(id))]
         return self.find(search_params=search_params, **kwargs)
 
 
