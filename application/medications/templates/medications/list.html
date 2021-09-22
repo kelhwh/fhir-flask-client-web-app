@@ -3,7 +3,7 @@
 {% block content %}
   <div class="container bg-light" style="padding:50px">
     <h1>Medication History</h1>
-    <h2>{{ ' '.join([current_user.given_name, current_user.family_name]) }}</h2>
+    <h2>{{ smart.human_name(smart.patient.name[0]) }}</h2>
   </div>
   <div class="container bg-white" style="padding:50px">
     {% for medication in medications %}

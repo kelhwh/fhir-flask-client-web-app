@@ -12,11 +12,11 @@
         </tr>
         <tr>
           <th style="text-align:right">Full Name</th>
-          <td>{{ current_user.given_name }} {{ current_user.family_name }}</td>
+          <td>{{ smart.human_name(smart.patient.name[0]) }}</td>
         </tr>
         <tr>
           <th style="text-align:right">Date of Birth</th>
-          <td>{{ current_user.date_of_birth }}</td>
+          <td>{{ smart.patient.birthDate.isostring }}</td>
         </tr>
         <tr>
           <th style="text-align:right">Contact</th>

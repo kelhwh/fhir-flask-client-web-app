@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container bg-light" style="padding:50px">
+    <h1>Login via your EHR provider</h1>
+  </div>
+  <div class="container" style="background:white; padding:50px">
+    <br>
+    <table class="table table-borderless">
+      <tbody>
+        <tr>
+          <th style="width: 100px; font-size: 32px">Epic</th>
+          <td style="width: 200px">username: fhircamila <br> password: epicepic1</td>
+          <td style="text-align:left"><a class="btn btn-primary" href="{{ url_for('oauth_bp.redirect_to_auth', service='epic') }}" rold="button">Login</a></td>
+      </tbody>
+  </div>
+{% endblock %}

@@ -1,9 +1,10 @@
 {% from 'macros.html' import render_form %}
 {% extends "base.html" %}
 {% block content %}
-  <div class="container bg-light">
+  <div class="container bg-light" style="padding:50px">
     <h1>Appointment History</h1>
-    <h2>{{ ' '.join([current_user.given_name, current_user.family_name]) }}</h2>
+
+    <h2>{{ smart.human_name(smart.patient.name[0]) }}</h2>
   </div>
   <div class="container bg-white">
     <table class="table table-striped">

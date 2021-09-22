@@ -14,21 +14,23 @@ class UserModel(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True) #can't change to user_id, it will crash the UserMixin
     given_name = db.Column(db.String(64))
-    family_name = db.Column(db.String(64))
-    date_of_birth = db.Column(db.Date)
-    identifier_system = db.Column(db.String())
-    identifier_value = db.Column(db.String(64))
+    family_name = db.Column(db.String(64), nullable=True)
+    date_of_birth = db.Column(db.Date, nullable=True)
+    identifier_system = db.Column(db.String(), nullable=True)
+    identifier_value = db.Column(db.String(64), nullable=True)
+    oauth_server = db.Column(db.String(64))
     patient_id = db.Column(db.Integer)
-    email = db.Column(db.String(64), unique=True, index=True)
-    password_hash = db.Column(db.String(256))
+    email = db.Column(db.String(64), nullable=True)
+    password_hash = db.Column(db.String(256), nullable=True)
 
 
-    def __init__(self, given_name, family_name, date_of_birth, identifier_system, identifier_value, patient_id, email, password):
+    def __init__(self, given_name, family_name, date_of_birth, identifier_system, identifier_value, oauth_server, patient_id, email, password):
         self.given_name = given_name
         self.family_name = family_name
         self.date_of_birth = date_of_birth
         self.identifier_system = identifier_system
         self.identifier_value = identifier_value
+        self.oauth_server = oauth_server
         self.patient_id = patient_id
         self.email = email
         self.password_hash = generate_password_hash(password)
