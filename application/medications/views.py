@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, redirect, url_for, request
 from fhirclient.models import condition, practitioner
 from application.fhir.connect import smart
 from application.fhir.search import ResourceFinder
-from application.oauth.util import oauth_required
+from application.oauth.utils import oauth_required
 from datetime import datetime, timedelta
 import pandas as pd
 

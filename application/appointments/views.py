@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, request
 from application.fhir.search import ResourceFinder
 from application.fhir.connect import smart
 from contextlib import suppress
-from application.oauth.util import oauth_required
+from application.oauth.utils import oauth_required
 
 ROWS_PER_PAGE = 10
 

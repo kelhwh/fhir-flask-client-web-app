@@ -9,7 +9,7 @@ def oauth_required(func):
     def decorated_view(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except:
+        except Exception:
             flash("Please login first.")
             return redirect(url_for('oauth_bp.index'))
         else:
