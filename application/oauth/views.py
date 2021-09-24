@@ -35,12 +35,12 @@ def redirect_to_auth(service, connection_type):
 @oauth_bp.route('/reset', methods=['GET'])
 def reset():
     #Reset all connected FHIR clients
-    for client in connector.client_dict:
-        client.server.auth.reset()
+    connector.reset()
 
+    #Logout flask login
     logout_user()
-    flash("You've now logged out.")
 
+    flash("You've now logged out.")
     return redirect(url_for('core_bp.welcome'))
 
 @oauth_bp.route('/<service>/callback')

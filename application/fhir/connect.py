@@ -24,5 +24,8 @@ class ClientConnector():
             self.target_client = client.FHIRClient(settings=settings)
             self.client_dict[service] = self.target_client
 
+    def reset(self):
+        self.__init__()
+
 connector = ClientConnector()
 smart = connector.source_client
