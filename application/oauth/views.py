@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user
 from application import db
 from application.models import UserModel
 from application.fhir.search import ResourceFinder
-from application.fhir.connect import smart
+from application.fhir.connect import connector
 import uuid
 from datetime import date
 
@@ -14,20 +14,30 @@ oauth_bp = Blueprint(
     template_folder='templates/oauth'
 )
 
+
 @oauth_bp.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
-@oauth_bp.route('/<service>', methods=['GET'])
-def redirect_to_auth(service):
+@oauth_bp.route('/<service>/<connection_type>', methods=['GET'])
+def redirect_to_auth(service, connection_type):
+
+    connector.connect(service=service, connection_type=connection_type)
+
+    smart=connector.source_client
     # url of authorize endpoint with params appended
     url = smart.authorize_url
+    print(url)
+    print(connector.client_dict)
 
     return redirect(url, 302)
 
 @oauth_bp.route('/reset', methods=['GET'])
 def reset():
-    smart.server.auth.reset()
+    #Reset all connected FHIR clients
+    for client in connector.client_dict:
+        client.server.auth.reset()
+
     logout_user()
     flash("You've now logged out.")
 
@@ -37,14 +47,15 @@ def reset():
 def oauth2_callback(service):
     print(service)
 
-    smart.handle_callback(request.url)
+    client = connector.client_dict[service]
+    client.handle_callback(request.url)
 
-    if smart.ready:
-        patient = smart.patient
-        print(smart.patient_id)
-        print(smart.server.auth.access_token)
+    if client.ready:
+        patient = client.patient
+        print(client.patient_id)
+        print(client.server.auth.access_token)
 
-        user = UserModel.query.filter_by(patient_id=smart.patient_id).first()
+        user = UserModel.query.filter_by(patient_id=client.patient_id).first()
         if user:
             pass
         else:
@@ -55,7 +66,7 @@ def oauth2_callback(service):
                 identifier_system = None,
                 identifier_value = None,
                 oauth_server = service,
-                patient_id = smart.patient_id,
+                patient_id = client.patient_id,
                 email = None,
                 password = uuid.uuid1().__str__() #to be deprecated in oauth version
             )
@@ -64,7 +75,7 @@ def oauth2_callback(service):
 
         login_user(user)
 
-        flash(f'Successfully authorized by {service.upper()}! Welcome, {smart.human_name(smart.patient.name[0])}!')
+        flash(f'Successfully authorized by {service.upper()}! Welcome, {client.human_name(client.patient.name[0])}!')
 
     else:
         flash(f'Authorization Failed! Please try again.')
