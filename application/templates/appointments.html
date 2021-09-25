@@ -14,6 +14,7 @@
               <th>Type</th>
               <th>Reason</th>
               <th>Provider</th>
+              <th></th>
           <tr>
       </thead>
       <tbody>
@@ -23,6 +24,9 @@
               <td>{{ appointment['type'] }}</td>
               <td>{{ appointment['reason'] }}</td>
               <td>{{ appointment['provider'] }}</td>
+              <td>
+                <a class="btn btn-primary" href="{{ url_for('exchange_bp.exchange', resource_type='Encounter', id=appointment['id']) }}" rold="button">Share</a>
+              </td>
           </tr>
           {% endfor %}
       </tbody>

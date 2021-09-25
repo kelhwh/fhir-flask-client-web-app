@@ -14,7 +14,7 @@ appointments_bp = Blueprint(
 
 
 @appointments_bp.route('/list', methods=['GET'])
-@oauth_required
+#@oauth_required
 def list():
     smart=connector.source_client
 
@@ -48,6 +48,8 @@ def list():
             dict['reason'] = appointment.reason[0].coding[0].display
         with suppress(TypeError):
             dict['provider'] = provider_name
+        with suppress(TypeError):
+            dict['id'] = appointment.id
         appointments.append(dict)
 
     return render_template(
