@@ -10,12 +10,16 @@
         <tr>
           <th style="width: 100px; font-size: 32px">Epic</th>
           <td style="width: 200px">username: fhircamila <br> password: epicepic1</td>
-          <td style="text-align:left"><a class="btn btn-primary" href="{{ url_for('oauth_bp.redirect_to_auth', service='epic', connection_type='source') }}" rold="button">Login</a></td>
+          <td style="text-align:left">
+            <a class="btn btn-primary" href="{{ url_for('oauth_bp.redirect_to_auth', service='epic', connection_type=connection_type) }}" rold="button">Login</a>
+          </td>
         </tr>
         <tr>
           <th style="width: 100px; font-size: 32px">Smart Sandbox</th>
           <td style="width: 200px">autofilled credentials</td>
-          <td style="text-align:left"><a class="btn btn-primary" href="{{ url_for('oauth_bp.redirect_to_auth', service='smart', connection_type='source') }}" rold="button">Login</a></td>
+          <td style="text-align:left">
+            <a class="btn btn-primary" href="{{ url_for('oauth_bp.redirect_to_auth', service='smart', connection_type=connection_type) }}" rold="button">Login</a>
+          </td>
         </tr>
       </tbody>
   </div>

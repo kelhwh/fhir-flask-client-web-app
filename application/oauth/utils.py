@@ -15,12 +15,12 @@ def oauth_required(func):
                 return func(*args, **kwargs)
             except Exception:
                 flash("Please login first.")
-                return redirect(url_for('oauth_bp.index'))
+                return redirect(url_for('oauth_bp.index', connection_type='source'))
             else:
                 return render_template('error.html')
         else:
             flash("Please login first.")
-            return redirect(url_for('oauth_bp.index'))
+            return redirect(url_for('oauth_bp.index', connection_type='source'))
 
         return func(*args, **kwargs)
 

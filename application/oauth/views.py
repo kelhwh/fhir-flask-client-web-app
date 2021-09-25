@@ -15,18 +15,22 @@ oauth_bp = Blueprint(
 )
 
 
-@oauth_bp.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
+@oauth_bp.route('/<connection_type>', methods=['GET'])
+def index(connection_type):
+
+    return render_template('index.html', connection_type=connection_type)
 
 @oauth_bp.route('/<service>/<connection_type>', methods=['GET'])
 def redirect_to_auth(service, connection_type):
 
     connector.connect(service=service, connection_type=connection_type)
 
-    smart=connector.source_client
     # url of authorize endpoint with params appended
-    url = smart.authorize_url
+    if connection_type == 'source':
+        url = connector.source_client.authorize_url
+    elif connection_type == 'target':
+        url = connector.target_client.authorize_url
+
     print(url)
     print(connector.client_dict)
 
