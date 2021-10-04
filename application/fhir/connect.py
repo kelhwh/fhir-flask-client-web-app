@@ -1,7 +1,7 @@
 from fhirclient import client
 from fhirclient.models.fhirsearch import FHIRSearch
 import yaml
-
+import json
 
 class ClientConnector():
     def __init__(self, *args, **kwargs):
@@ -26,6 +26,20 @@ class ClientConnector():
 
     def reset(self):
         self.__init__()
+
+    def post_to_target(self, resource_type, resource_json):
+
+        url = '/'.join([self.target_client.server.base_uri, resource_type])
+        headers = {
+            'Accept': 'application/fhir+json',
+            'Accept-Charset': 'UTF-8',
+        }
+        if not self.target_client.server.auth is not None and self.target_client.server.auth.can_sign_headers():
+            headers = self.target_client.server.auth.signed_headers(headers)
+
+        # perform the request but intercept 401 responses, raising our own Exception
+        res = self.target_client.server.session.post(url, headers=headers, data=json.dumps(resource_json))
+        return res
 
 connector = ClientConnector()
 smart = connector.source_client
