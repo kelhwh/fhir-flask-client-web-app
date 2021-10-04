@@ -14,7 +14,7 @@ appointments_bp = Blueprint(
 
 
 @appointments_bp.route('/list', methods=['GET'])
-#@oauth_required
+@oauth_required
 def list():
     smart=connector.source_client
 
