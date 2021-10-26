@@ -33,6 +33,7 @@ class ClientConnector():
         headers = {
             'Accept': 'application/fhir+json',
             'Accept-Charset': 'UTF-8',
+            'Content-Type': 'application/fhir+json'
         }
         if not self.target_client.server.auth is not None and self.target_client.server.auth.can_sign_headers():
             headers = self.target_client.server.auth.signed_headers(headers)
