@@ -5,41 +5,37 @@
     <h5>This is a FHIR client web app built with Flask.</h5>
     <br>
     <h2>Intro</h2>
-    <p>In the world of information, sharing is important.
-      But it's extremely difficult to communicate when it comes to complex domains like healthcare. Even the definition of a disease can vary across regions, let alone the format of medical records.
-      Fortunately, there is a popular interoperability standard, FHIR, to facilitate the exchange of health information.</p>
+    <p>In the digital era, sharing information is important. It's especially true for healhtcare as siloed information only hinders coordination and continuity of care, resulting in suboptimal care quality.
+      But, it's extremely difficult to communicate when it comes to complex domains like healthcare. Even the definition of a disease can vary across regions, let alone the format of medical records.
+      Historically, there are many standards trying to align how people structure health data but most of them weren't widely adopted mainly because of the complexity and unfriendly format to developers.
+      Fortunately, there is an emerging interoperability standard, FHIR, leveraging the common file format and the power of API to facilitate the exchange of health information.</p>
     <p>
-      This web app connects to a public FHIR testing server, everything is rendered on the fly (except for the login information).
-      That being said, the app can be easily migrated to any FHIR server by changing the server the app connects to. This is exactly the potential of FHIR!
+      This web app connects to sandbox FHIR servers (Epic and SMART) via OAuth, everything is rendered on the fly and nothing is stored.
+      That means, the app can be easily migrated to any FHIR server by changing the server the app connects to, it's a plug-and-play app.
     </p>
     <br>
     <h2>Scope</h2>
     <p>
-      Currently, the app can read and render the Encounter resource (<a href="https://www.hl7.org/fhir/resourcelist.html">FHIR resources</a>).
-      I aim to render the appointments and medication resources and a patient page with both read and update operations.
+      Currently, the app can read from the primary EHR system you logged in and render the Encounter resource (<a href="https://www.hl7.org/fhir/resourcelist.html">FHIR resources</a>).
+      After logging into the secondary EHR system, you can share an Encounter record from the primary EHR to the secondary EHR by clicking  "share" button.
     </p>
   </div>
   <br>
   <div class="container bg-light" style="padding:50px">
     <h2>Instruction</h2>
     <ol>
-      <li><a href="{{ url_for('users_bp.login') }}">Login</a> with prefilled credentials, if failed, go <a href="{{ url_for('users_bp.register') }}">register</a> the user first.</li>
-      <li>Go to <a href="{{ url_for('appointments_bp.list') }}">Appointments</a>, where you can see the appointment history of the patient fetched from the FHIR server.</li>
+      <li><a href="{{ url_for('users_bp.login') }}">Login</a> to Epic (as the primary EHR) with credentials instructed.</li>
+      <li>Go to <a href="{{ url_for('appointments_bp.list') }}">Appointments</a>, where you can see the appointment history of the patient fetched from the Epic FHIR server.</li>
+      <li>Click any "share" button you like.</li>
+      <li>Login to the SMART (as the secondary EHR) with prefilled credentials.</li>
+      <li>Go to <a href="{{ url_for('appointments_bp.list') }}">Appointments</a> and click "share" button again, now you should see a banner saying sharing successful.</li>
+      <li>If you want to verify the sharing, click <a href="{{ url_for('users_bp.logout') }}">Logout</a> and login to SMART as the primary EHR. You should be able to see the Encounter that you share from the Epic previously in <a href="{{ url_for('appointments_bp.list') }}">Appointments</a>.</li>
     </ol>
-    <h4>Note</h4>
-    <ul>
-      <li>
-        <p>
-          The registration is verified with the patient information from the FHIR server, any change to the prefilled values will fail the registration.
-          You won't be able to register a random user unless you know what users are in the server.
-        </p>
-      </li>
-    </ul>
   </div>
   <br>
   <div class="container bg-light" style="padding:50px">
     <h2>Disclaimer</h2>
-    <p>The app connects to the HAPI FHIR Reference Server (STU3) <a href="http://hapi.fhir.org/baseDstu3/">http://hapi.fhir.org/baseDstu3/</a>. All information display is retrieved from the server and is for testing purpose.</p>
+    <p>All information displayed here is retrieved from the sandbox servers and is for demo noly.</p>
     <br>
     <h2>Source</h2>
     <ul>
