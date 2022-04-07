@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, session, flash, redirect, url_for
 from flask_login import current_user, login_required
 from fhirclient.models.patient import Patient
 from contextlib import suppress
-from application.fhir.connect import smart
+from application.fhir.connect import connector
 from application.fhir.search import ResourceFinder
 from application.profile.forms import EditProfileForm
 from application.oauth.utils import oauth_required
@@ -17,7 +17,7 @@ profile_bp = Blueprint(
 @profile_bp.route('/', methods=['GET'])
 @oauth_required
 def profile():
-
+    smart = connector.source_client
     PatientFinder = ResourceFinder.build('Patient', smart.server)
     patient = PatientFinder.find_by_id(smart.patient_id, first=True)
 
@@ -55,6 +55,7 @@ def edit():
 
     form = EditProfileForm()
 
+    smart = connector.source_client
     PatientFinder = ResourceFinder.build('Patient', smart.server)
     patient = PatientFinder.find_by_id(
         current_user.patient_id,

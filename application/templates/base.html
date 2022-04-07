@@ -41,7 +41,7 @@
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link active" href="{{ url_for('oauth_bp.index') }}">Login</a>
+              <a class="nav-link active" href="{{ url_for('oauth_bp.index', connection_type='source') }}">Login</a>
             </li>
             {% endif %}
           </ul>

@@ -32,6 +32,7 @@ from application.appointments.views import appointments_bp
 from application.profile.views import profile_bp
 from application.medications.views import medications_bp
 from application.oauth.views import oauth_bp
+from application.exchange.views import exchange_bp
 
 app.register_blueprint(core_bp)
 app.register_blueprint(users_bp)
@@ -39,3 +40,4 @@ app.register_blueprint(appointments_bp)
 app.register_blueprint(profile_bp)
 app.register_blueprint(medications_bp)
 app.register_blueprint(oauth_bp)
+app.register_blueprint(exchange_bp)

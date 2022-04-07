@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint, redirect, url_for, request
 from fhirclient.models import condition, practitioner
-from application.fhir.connect import smart
+from application.fhir.connect import connector
 from application.fhir.search import ResourceFinder
 from application.oauth.utils import oauth_required
 from datetime import datetime, timedelta
@@ -17,6 +17,7 @@ medications_bp = Blueprint(
 @medications_bp.route('/list')
 @oauth_required
 def list():
+    smart=connector.source_client
     MedicationRequestFinder = ResourceFinder('MedicationRequest', smart.server)
 
     result = MedicationRequestFinder.find_by_patient(smart.patient_id)
@@ -50,6 +51,8 @@ def list():
 @medications_bp.route('/grid', methods=['GET'])
 @oauth_required
 def grid():
+    smart=connector.source_client
+    
     search_date = request.args.get('search_date') or '2014-01-25'
     search_date = datetime.fromisoformat(search_date).date()
     start = search_date - timedelta(days = 15)
