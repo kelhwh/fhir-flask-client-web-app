@@ -4,6 +4,8 @@ import yaml
 import json
 
 class ClientConnector():
+"""An object to host two FHIR client an perform data exchange.
+"""
     def __init__(self, *args, **kwargs):
         self.source_client = None
         self.target_client = None

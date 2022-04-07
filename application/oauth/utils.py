@@ -5,6 +5,8 @@ from functools import wraps
 from application.fhir.connect import connector
 
 def oauth_required(func):
+"""Decorator to enforce the requirement of OAuth
+"""
     @wraps(func)
     def decorated_view(*args, **kwargs):
         smart = connector.source_client
