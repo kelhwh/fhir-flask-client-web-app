@@ -22,8 +22,13 @@ def index(connection_type):
 
 @oauth_bp.route('/<service>/<connection_type>', methods=['GET'])
 def redirect_to_auth(service, connection_type):
+<<<<<<< HEAD
     """Direct to the authorize page based on selected parameters.
     """
+=======
+"""Direct to the authorize page based on selected parameters.
+"""
+>>>>>>> master
 
     connector.connect(service=service, connection_type=connection_type)
 
@@ -51,8 +56,13 @@ def reset():
 
 @oauth_bp.route('/<service>/callback')
 def oauth2_callback(service):
+<<<<<<< HEAD
     """An intermediate step to show banner and add user into app database once OAuth is successfully passed.
     """
+=======
+"""An intermediate step to show banner and add user into app database once OAuth is successfully passed.
+"""
+>>>>>>> master
     print(service)
 
     client = connector.client_dict[service]
