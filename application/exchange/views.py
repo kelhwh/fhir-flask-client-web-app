@@ -12,8 +12,8 @@ exchange_bp = Blueprint(
 
 @exchange_bp.route('/<resource_type>/<id>')
 def exchange(resource_type, id):
-"""Send specific FHIR resource from source client to target client.
-"""
+    """Send specific FHIR resource from source client to target client.
+    """
     path = resource_type
 
     if connector.target_client is None:
