@@ -53,15 +53,14 @@ def reset():
 def oauth2_callback(service):
     """An intermediate step to show banner and add user into app database once OAuth is successfully passed.
     """
-    print(service)
 
     client = connector.client_dict[service]
     client.handle_callback(request.url)
 
     if client.ready:
         patient = client.patient
-        print(client.patient_id)
-        print(client.server.auth.access_token)
+        #print(client.patient_id)
+        #print(client.server.auth.access_token)
 
         user = UserModel.query.filter_by(patient_id=client.patient_id).first()
         if user:

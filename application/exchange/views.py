@@ -28,9 +28,7 @@ def exchange(resource_type, id):
     resource.subject.reference = "Patient/{}".format(connector.target_client.patient_id)
 
     #Post resource to targer server: https://base_uri/resource_type
-    #response = connector.target_client.server.post_json(path, resource.as_json())
     response = connector.post_to_target(resource_type, resource.as_json())
-    print(response.content)
 
     if response.status_code < 400:
         flash("Successfully shared to {}!".format(connector.target_client.server.base_uri))
