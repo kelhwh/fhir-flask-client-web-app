@@ -1,4 +1,3 @@
 __pycache__/
 *.sqlite
 test.py
-server_config.yml
